@@ -54,7 +54,7 @@ const Checkout = () => {
     };
 
     const handleDiscount = async () => {
-      if (orders.length > 4 && orders.length <= 5) {
+      if (orders.length > 3 && orders.length <= 5) {
         await setPromotion('(Buy 4 Get 10% Off)');
         await setDiscount((sum * 10) / 100);
         await setTotal(sum - (sum * 10) / 100);
