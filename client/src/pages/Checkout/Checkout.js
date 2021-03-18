@@ -11,6 +11,7 @@ import {
   addOrderConfirm,
   fetchOrderConfirm,
 } from '../../actions/ordersAction';
+import { addTimer } from '../../actions/timerAction';
 import {
   OrderSummaryContainer,
   OrderSummaryGrid,
@@ -35,8 +36,11 @@ const Checkout = () => {
   const [total, setTotal] = useState(0);
   const [promotion, setPromotion] = useState('');
   const [payment, setPayment] = useState('');
+  const [timerMinutes, setTimerMinutes] = useState('00');
+  const [timerSeconds, setTimerSeconds] = useState(60);
   const { orders } = useSelector((state) => state.orders);
   const { orderConfirm } = useSelector((state) => state.orderConfirm);
+  const { timer } = useSelector((state) => state.timer);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -67,8 +71,21 @@ const Checkout = () => {
     handleSumPrice();
     handleDiscount();
     dispatch(fetchOrderConfirm());
-  }, [dispatch, orders, sum, discount, total]);
 
+    return () => clearInterval(timer);
+  }, [dispatch, orders, sum, discount, total, timerSeconds]);
+
+  console.log('timer: ', timer);
+
+  const countdown = () => {
+    timerSeconds > 0 &&
+      setInterval(async () => {
+        // dispatch(addTimer(timerSeconds - 1));
+        setTimerSeconds(timerSeconds - 1);
+      }, 1000);
+  };
+
+  // console.log('timerSeconds: ', timerSeconds);
   const handleDeleteOrder = async (id) => {
     await dispatch(deleteOrder(id));
     await dispatch(fetchOrders());
@@ -114,8 +131,9 @@ const Checkout = () => {
         };
         await dispatch(addOrderConfirm(confirm));
         await dispatch(handleDeleteAllOrder);
+        await countdown();
         history.push('/');
-        await notify(orderConfirm.payment);
+        await notify(orderConfirm.payment, timerMinutes, timerSeconds);
       } else {
         await Swal.fire({
           title: 'Fail!',

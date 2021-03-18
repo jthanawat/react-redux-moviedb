@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import GlobalStyles from './globalStyles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Homepage, Checkout } from './pages/index';
@@ -8,16 +8,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const [timerMinutes, setTimerMinutes] = useState('00');
-  const [timerSeconds, setTimerSeconds] = useState(60);
-
-  useEffect(() => {
-    const timer =
-      timerSeconds > 0 &&
-      setInterval(() => setTimerSeconds(timerSeconds - 1), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <Router>
       <GlobalStyles />
@@ -45,8 +35,8 @@ function App() {
 
 export default App;
 
-export const notify = (bank, timerSeconds) => {
-  toast.dark(`Please transfer money to ${bank} within ${timerSeconds}`, {
+export const notify = (bank, minutes, seconds) => {
+  toast.dark(`Please transfer money to ${bank} within ${minutes}:${seconds}`, {
     position: 'top-center',
     autoClose: 60000,
     hideProgressBar: false,
