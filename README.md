@@ -1,4 +1,4 @@
-# skuberg-moviedb
+
 
 ## Getting Started with This Project
 
@@ -23,5 +23,4 @@ cd client/
 ```
 
 and then you must install npm packages: `npm install` and you can run: `npm start` as well.
-# skuberg-moviedb
-# skuberg-moviedb
+
